@@ -1,20 +1,14 @@
 package com.m2dl.challenge.challengeandroid;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Handler;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
+import android.util.Log;
 
+import com.activeandroid.query.Select;
 import com.m2dl.challenge.challengeandroid.Activity.JeuActivity;
-import com.m2dl.challenge.challengeandroid.Model.Objet;
+import com.m2dl.challenge.challengeandroid.Model.Configuration;
+import com.m2dl.challenge.challengeandroid.Model.Difficulte;
 import com.m2dl.challenge.challengeandroid.Service.GenerationObjet;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Elliot on 28/01/2016.
@@ -59,12 +53,23 @@ public class JeuThread extends Thread {
     }
 
     protected void doDraw() {
+
+
+        Configuration confActuelle = new Select().from(Configuration.class).orderBy("date DESC").executeSingle();
+
+
         timer++;
-        if (timer >= 100) {
+        if (timer >= confActuelle.getDifficulte().timer) {
             GenerationObjet gen = new GenerationObjet(context);
             this.activity.getJeuView().addObjet(gen.genererObjetAleatoire());
             timer = 0;
         }
+        float gyroscopeZ = this.activity.getJeuView().getGyroscopeZ();
+        int val = ((Float)(- gyroscopeZ * 20)).intValue();
+        this.activity.getJeuView().moveDeplacementX(val);
+
+        Log.i("ter.jeuthread", String.format("gyro %f - %d value defined %d", this.activity.getJeuView().getGyroscopeZ(), val, this.activity.getJeuView().getDeplacementX()));
+
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -79,13 +84,6 @@ public class JeuThread extends Thread {
         this.activity.getJeuView().invalidate();
     }
 
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() != MotionEvent.ACTION_DOWN) {
-            return false;
-        }
-
-        return true;
-    }
 
     public void setRunning(boolean running) {
         this.running = running;

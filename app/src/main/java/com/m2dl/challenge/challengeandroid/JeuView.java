@@ -55,13 +55,37 @@ public class JeuView extends View {
     private int widthVerre;
     private int heightVerre;
     private ShapeDrawable shapeDrawable;
+
+    public void moveDeplacementX(int value) {
+        int oneHalfPercentOfScreen = getWidthPxPerPercent()/2;
+        int newDeplacement = oneHalfPercentOfScreen * value;
+        //Log.i("ter.info", String.format("%d", newDeplacement));
+        if (
+                (newDeplacement + deplacementX >  -40 * oneHalfPercentOfScreen * 2)
+                && (newDeplacement+deplacementX < 40 * oneHalfPercentOfScreen * 2)
+                ){
+            deplacementX += newDeplacement;
+        }
+    }
+
     private int deplacementX;
 
     private int score = 0;
 
     private Path path;
+    private float orientationZ;
 
     private List<Objet> objets;
+
+    public int getDeplacementX() {
+        return deplacementX;
+    }
+
+    public float getGyroscopeZ() {
+        return gyroscopeZ;
+    }
+
+    private float gyroscopeZ;
 
     public JeuView(Context activityContext) {
         super(activityContext);
@@ -79,36 +103,24 @@ public class JeuView extends View {
                 // mStatusText.setText(m.getData().getString("text"));
             }
         });
-        thread.start();
         setFocusable(true);
 
         waterImg = BitmapFactory.decodeResource(getResources(), R.drawable.water);
         glassImg = BitmapFactory.decodeResource(getResources(), R.drawable.glass);
         waterShader = new BitmapShader(waterImg, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
         deplacementX = 0;
+        gyroscopeZ = 0.0F;
 
         objets = new ArrayList<Objet>();
     }
-
 
     public JeuThread getThread()
     {
         return thread;
     }
-/*
-    public void surfaceCreated(SurfaceHolder holder) {
-        if (thread.getState() == Thread.State.TERMINATED) {
-            thread = new JeuThread(getHolder(), getContext(), getHandler());
-            thread.start();
-        } else {
-            thread.start();
-        }
-    }
-*/
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.i("ter.jeuview", "draw things");
         super.onDraw(canvas);
         // Reset width and height
         this.width = this.getWidth();
@@ -141,8 +153,9 @@ public class JeuView extends View {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(Color.WHITE);
+        paint.setTextSize(60);
 
-        canvas.drawText("Score : " + score, 200, 0, paint);
+        canvas.drawText("Score : " + score, 50, 75, paint);
     }
 
     public void drawGlacon (Canvas canvas) {
@@ -201,16 +214,16 @@ public class JeuView extends View {
 
 
         int glassX1 = (width/2)-(widthVerre/2)+ deplacementX + xPercentOfDevice * 3,
-                glassX2 = (width/2)+(widthVerre/2)+ deplacementX - xPercentOfDevice * 4,
-                glassX3 = (width/2)+(widthVerre/2)+ deplacementX - xPercentOfDevice * 3,
-                glassX4 = (width/2)-(widthVerre/2)+ deplacementX + xPercentOfDevice * 2,
-                glassY1 = height - glassBottomY1,
-                glassY2 = height - glassBottomY1,
-                glassY3 = height- glassHeightPercent - glassBottomY1,
-                glassY4 = height- glassHeightPercent - glassBottomY1;
+            glassX2 = (width/2)+(widthVerre/2)+ deplacementX - xPercentOfDevice * 4,
+            glassX3 = (width/2)+(widthVerre/2)+ deplacementX - xPercentOfDevice * 3,
+            glassX4 = (width/2)-(widthVerre/2)+ deplacementX + xPercentOfDevice * 2,
+            glassY1 = height - glassBottomY1,
+            glassY2 = height - glassBottomY1,
+            glassY3 = height- glassHeightPercent - glassBottomY1,
+            glassY4 = height- glassHeightPercent - glassBottomY1;
 
 
-        Log.d("ter.verreview", String.format("1[%d, %d] 2[%d, %d] 3[%d, %d] 4[%d, %d]", glassX1, glassY1, glassX2, glassY2, glassX3, glassY3, glassX4, glassY4));
+        //Log.d("ter.verreview", String.format("1[%d, %d] 2[%d, %d] 3[%d, %d] 4[%d, %d]", glassX1, glassY1, glassX2, glassY2, glassX3, glassY3, glassX4, glassY4));
 
         Path path = new Path();
         path.moveTo(glassX1, glassY1);
@@ -267,7 +280,6 @@ public class JeuView extends View {
                 Log.i("ter.VerreView", "ACTION_CANCEL");
                 break;
         }
-        invalidate();
         return true;
     }
 
@@ -292,5 +304,10 @@ public class JeuView extends View {
 
     public void addObjet(Objet objet) {
         objets.add(objet);
+    }
+
+    public void setGyroscope(float gyroscopeZ) {
+        Log.i("ter.jeuview", String.format("%f", gyroscopeZ));
+        this.gyroscopeZ = gyroscopeZ;
     }
 }
