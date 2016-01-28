@@ -1,10 +1,13 @@
 package com.m2dl.challenge.challengeandroid.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import com.m2dl.challenge.challengeandroid.JeuView;
+import com.m2dl.challenge.challengeandroid.Service.TakePicture;
+
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -99,5 +102,11 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
 
     public JeuView getJeuView() {
         return jeuView;
+    }
+
+    public void launchGameOver(int score) {
+        Intent intent = new Intent(this, TakePicture.class);
+        intent.putExtra("score", score+"");
+        startActivity(intent);
     }
 }

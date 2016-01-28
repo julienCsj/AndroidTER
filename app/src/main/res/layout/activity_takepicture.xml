@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Score"
-        android:id="@+id/textView"
+        android:id="@+id/textViewScore"
         android:layout_above="@+id/imageView"
         android:layout_centerHorizontal="true" />
 

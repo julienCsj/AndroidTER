@@ -1,5 +1,7 @@
 package com.m2dl.challenge.challengeandroid.Service;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
@@ -14,9 +16,11 @@ import android.provider.MediaStore;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
+import com.m2dl.challenge.challengeandroid.Activity.MainActivity;
 import com.m2dl.challenge.challengeandroid.Model.Configuration;
 import com.m2dl.challenge.challengeandroid.Model.Score;
 import com.m2dl.challenge.challengeandroid.R;
@@ -31,19 +35,17 @@ public class TakePicture extends Activity implements SurfaceHolder.Callback
     private ImageView iv_image;
     //a variable to store a reference to the Surface View at the main.xml file
     private SurfaceView sv;
-
     //a bitmap to display the captured image
     private Bitmap bmp;
-
     //Camera variables
     //a surface holder
+    private TextView tvScore;
     private SurfaceHolder sHolder;
     //a variable to control the camera
     private Camera mCamera;
     //the camera parameters
     private Parameters parameters;
-
-    private int score;
+    private String score;
 
     /** Called when the activity is first created. */
     @Override
@@ -53,7 +55,9 @@ public class TakePicture extends Activity implements SurfaceHolder.Callback
         setContentView(R.layout.activity_takepicture);
 
         Intent intent = getIntent();
-        score = Integer.getInteger(intent.getStringExtra("score"));
+        score = intent.getStringExtra("score");//Integer.getInteger(intent.getStringExtra("score"));
+        tvScore = (TextView) findViewById(R.id.textViewScore);
+        tvScore.setText("Score : "+score);
 
         //get the Image View at the main.xml file
         iv_image = (ImageView) findViewById(R.id.imageView);
@@ -85,13 +89,37 @@ public class TakePicture extends Activity implements SurfaceHolder.Callback
                 //decode the data obtained by the camera into a Bitmap
                 bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
                 //set the iv_image
-                Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), bmp.getHeight(), Toast.LENGTH_SHORT).show();
-                iv_image.setImageBitmap(bmp);
+                //Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), bmp.getHeight(), Toast.LENGTH_SHORT).show();
+                //iv_image.setImageBitmap(bmp);
 
-                MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "YOU_LOOSE" + new Date().getTime(), "Image du jeu");
+                //MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "YOU_LOOSE" + new Date().getTime(), "Image du jeu");
 
-                saveScore("vide");
+                String pathPhoto = "gameover-"+new Date().getTime()+".png";
+                File f = new File(getDir("", MODE_WORLD_WRITEABLE).getPath()+pathPhoto);
+                try {
+                    f.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                FileOutputStream out = null;
+                try {
+                    out = new FileOutputStream(f);
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+                    // PNG is a lossless format, the compression factor (100) is ignored
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (out != null) {
+                            out.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                iv_image.setImageBitmap(BitmapFactory.decodeFile(pathPhoto));
+                saveScore(f.getPath());
             }
         };
 
@@ -126,6 +154,10 @@ public class TakePicture extends Activity implements SurfaceHolder.Callback
 
     public void saveScore(String pathPhoto) {
         Configuration conf = new Select().from(Configuration.class).orderBy("date DESC").executeSingle();
-        new Score(score, conf.getPseudo(), pathPhoto, conf.getDifficulte());
+        new Score(Integer.decode(score), conf.getPseudo(), pathPhoto, conf.getDifficulte()).save();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

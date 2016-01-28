@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.m2dl.challenge.challengeandroid.Activity.JeuActivity;
 import com.m2dl.challenge.challengeandroid.Model.Cola;
 import com.m2dl.challenge.challengeandroid.Model.Glacon;
 import com.m2dl.challenge.challengeandroid.Model.Objet;
@@ -271,9 +272,7 @@ public class JeuView extends View {
     }
 
     public void gameOver() {
-        Intent intent = new Intent(getContext(), TakePicture.class);
-        intent.putExtra("score", score);
-        getContext().startActivity(intent);
+        ((JeuActivity) getContext()).launchGameOver(this.score);
     }
 
 
