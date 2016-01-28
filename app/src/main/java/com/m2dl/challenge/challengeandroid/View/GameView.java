@@ -28,8 +28,6 @@ public class GameView extends View {
     private Shader waterShader;
     private Bitmap waterImg;
 
-    private Path mPath = null;
-
     private int width;
     private int height;
     private int widthVerre;
@@ -52,7 +50,6 @@ public class GameView extends View {
         this.height = this.getHeight();
 
         // Draw water
-        this.setPath();
         this.drawWaterTexture(canvas);
 
         // Draw glass
@@ -66,35 +63,52 @@ public class GameView extends View {
         paint.setFilterBitmap(true);
         paint.setDither(true);
         Bitmap glassResized = getResizedBitmapWithSameRatio(glassImg, getWidthPxPerPercent()*GLASS_SIZE);
-        canvas.drawBitmap(glassResized, 0, 0, paint);
+
+        int yVerre = height - glassResized.getHeight();
+        int xVerre = (width/2)-(glassResized.getWidth()/2) + deplacementX;
+
+        canvas.drawBitmap(glassResized, xVerre, yVerre, paint);
     }
     private void drawWaterTexture(Canvas canvas) {
-        shapeDrawable = new ShapeDrawable(new PathShape(this.mPath, width, height));
+        PathShape path = this.getPath();
+        shapeDrawable = new ShapeDrawable(path);
         shapeDrawable.getPaint().setStyle(Paint.Style.FILL);
         shapeDrawable.getPaint().setShader(this.waterShader);
         shapeDrawable.setBounds(0, 0, width, height);
         shapeDrawable.draw(canvas);
     }
-
-    private void setPath() {
-        Double widthVerreDouble = (0.10 * this.width);
-        Double heightVerreDouble = (0.10 * this.height);
+    private int getXGlass() {
+        return 0;
+    }
+    private PathShape getPath() {
+        int xPercentOfDevice = getWidthPxPerPercent();
+        Double widthVerreDouble = ((Integer)(xPercentOfDevice*(GLASS_SIZE-8))).doubleValue();
         this.widthVerre = widthVerreDouble.intValue();
-        this.heightVerre = heightVerreDouble.intValue();
+        this.heightVerre = getWidthPxPerPercent()*19;
+
+        int glassHeightPercent = getWidthPxPerPercent() * 18;
+        int glassBottomY1 = getWidthPxPerPercent() * 20;
 
 
-        int widthVerre1 = (width/2)-(widthVerre/2)+ deplacementX;
-        int widthVerre2 = (width/2)+(widthVerre/2)+ deplacementX;
-        int heightVerre1 = height-heightVerre;
+        int glassX1 = (width/2)-(widthVerre/2)+ deplacementX + xPercentOfDevice * 3,
+            glassX2 = (width/2)+(widthVerre/2)+ deplacementX - xPercentOfDevice * 4,
+            glassX3 = (width/2)+(widthVerre/2)+ deplacementX - xPercentOfDevice * 3,
+            glassX4 = (width/2)-(widthVerre/2)+ deplacementX + xPercentOfDevice * 2,
+            glassY1 = height - glassBottomY1,
+            glassY2 = height - glassBottomY1,
+            glassY3 = height- glassHeightPercent - glassBottomY1,
+            glassY4 = height- glassHeightPercent - glassBottomY1;
 
-        this.mPath = new Path();
-        this.mPath.moveTo(widthVerre1, height);
-        this.mPath.lineTo(widthVerre2, height);
-        this.mPath.lineTo(widthVerre2, heightVerre1);
-        this.mPath.lineTo(widthVerre1, heightVerre1);
-        this.mPath.close();
-        Log.d("ter.verreview", String.format("width: %d; height: %d", width, height));
-        Log.d("ter.verreview", String.format("widthVerre1: %d; widthVerre2: %d; heightVerre1: %d", widthVerre1, widthVerre2, heightVerre1));
+
+        Log.d("ter.verreview", String.format("1[%d, %d] 2[%d, %d] 3[%d, %d] 4[%d, %d]", glassX1, glassY1, glassX2, glassY2, glassX3, glassY3, glassX4, glassY4));
+
+        Path path = new Path();
+        path.moveTo(glassX1, glassY1);
+        path.lineTo(glassX2, glassY2);
+        path.lineTo(glassX3, glassY3);
+        path.lineTo(glassX4, glassY4);
+        path.close();
+        return new PathShape(path, width, height);
     }
 
     private int getWidthPxPerPercent() {
