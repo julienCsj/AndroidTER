@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.m2dl.challenge.challengeandroid.Model.Objet;
@@ -29,7 +30,7 @@ import java.util.List;
 /**
  * Created by Elliot on 28/01/2016.
  */
-public class JeuView extends SurfaceView {
+public class JeuView extends View {
 
     private JeuThread thread;
     private Context context;
@@ -54,10 +55,10 @@ public class JeuView extends SurfaceView {
         super(activityContext);
 
         // register our interest in hearing about changes to our surface
-        SurfaceHolder holder = getHolder();
+        //SurfaceHolder holder = getHolder();
 
         // create thread only; it's started in surfaceCreated()
-        thread = new JeuThread(holder, activityContext, new Handler()
+        thread = new JeuThread(activityContext, new Handler()
         {
             @Override
             public void handleMessage(Message m)
@@ -66,7 +67,7 @@ public class JeuView extends SurfaceView {
                 // mStatusText.setText(m.getData().getString("text"));
             }
         });
-
+        thread.start();
         setFocusable(true);
 
         waterImg = BitmapFactory.decodeResource(getResources(), R.drawable.water);
@@ -82,7 +83,7 @@ public class JeuView extends SurfaceView {
     {
         return thread;
     }
-
+/*
     public void surfaceCreated(SurfaceHolder holder) {
         if (thread.getState() == Thread.State.TERMINATED) {
             thread = new JeuThread(getHolder(), getContext(), getHandler());
@@ -91,7 +92,7 @@ public class JeuView extends SurfaceView {
             thread.start();
         }
     }
-
+*/
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -100,7 +101,8 @@ public class JeuView extends SurfaceView {
         // Reset width and height
         this.width = this.getWidth();
         this.height = this.getHeight();
-
+        // Draw objets
+        this.drawGlacon(canvas);
         // Draw water
         this.drawWaterTexture(canvas);
 
@@ -124,7 +126,7 @@ public class JeuView extends SurfaceView {
     public void drawGlacon (Canvas canvas) {
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), new Paint(Color.BLACK));
         for (int i = 0; i < objets.size(); i++) {
-            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(),
+            canvas.drawBitmap(BitmapFactory.decodeResource(getResources(),
                     objets.get(i).getSkin()), objets.get(i).getX().intValue(), objets.get(i).getY().intValue(), null);
             objets.get(i).bouger();
         }
