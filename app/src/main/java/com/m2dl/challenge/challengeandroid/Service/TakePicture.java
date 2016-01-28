@@ -91,7 +91,7 @@ public class TakePicture extends Activity implements SurfaceHolder.Callback
     {
         // The Surface has been created, acquire the camera and tell it where
         // to draw the preview.
-        mCamera = Camera.open(Camera;);
+        mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
         try {
             mCamera.setPreviewDisplay(holder);
 
