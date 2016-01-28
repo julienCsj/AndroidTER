@@ -15,6 +15,7 @@ import android.graphics.Region;
 import android.graphics.Shader;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -186,6 +187,8 @@ public class JeuView extends View {
 
                 if(objets.get(i) instanceof Glacon) {
                     score += 10;
+                    MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.water_droplet_1);
+                    mediaPlayer.start();
                 }
                 objets.remove(i);
             }
