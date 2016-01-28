@@ -19,9 +19,7 @@ public class JeuActivity extends AppCompatActivity {
         FrameLayout layout = new FrameLayout(this);
         jeuView = new JeuView(this);
         layout.addView(jeuView);
-
         setContentView(layout);
-
         super.onStart();
     }
 
