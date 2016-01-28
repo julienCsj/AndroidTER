@@ -3,7 +3,10 @@ package com.m2dl.challenge.challengeandroid.Activity;
 import android.app.ListActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TabHost;
 
@@ -20,6 +23,7 @@ import java.util.List;
 public class ScoreActivity extends AppCompatActivity {
 
     private ListView list;
+    private Button reset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,5 +46,18 @@ public class ScoreActivity extends AppCompatActivity {
         scores = new Select().from(Score.class).orderBy("score desc").execute();
         list=(ListView) findViewById(R.id.listView);
         list.setAdapter(new ScoreAdapter(this, scores));
+
+
+        reset = (Button) findViewById(R.id.resetScore);
+        reset.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                List<Score> scores = new Select().from(Score.class).orderBy("score desc").execute();
+                for (Score s : scores) {
+                    s.delete();
+                }
+                return true;
+            }
+        });
     }
 }
