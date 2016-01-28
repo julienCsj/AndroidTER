@@ -65,35 +65,10 @@ public class JeuThread extends Thread {
             timer = 0;
         }
         float gyroscopeZ = this.activity.getJeuView().getGyroscopeZ();
-        if (gyroscopeZ > 3) {
-            this.activity.getJeuView().moveDeplacementX(-3);
-        } else {
-            if (gyroscopeZ > 2) {
-                this.activity.getJeuView().moveDeplacementX(-2);
-            } else {
-                if (gyroscopeZ > 1) {
-                    this.activity.getJeuView().moveDeplacementX(-1);
-                } else {
-                    if (gyroscopeZ > 0) {
-                        this.activity.getJeuView().moveDeplacementX(0);
-                    } else {
-                        if (gyroscopeZ > -1) {
-                            this.activity.getJeuView().moveDeplacementX(1);
-                        } else {
-                            if (gyroscopeZ > -2) {
-                                this.activity.getJeuView().moveDeplacementX(2);
-                            } else {
-                                if (gyroscopeZ > -3) {
-                                    this.activity.getJeuView().moveDeplacementX(3);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        int val = ((Float)(- gyroscopeZ * 20)).intValue();
+        this.activity.getJeuView().moveDeplacementX(val);
 
-        Log.i("ter.jeuthread", String.format("gyro %f - value defined %d", this.activity.getJeuView().getGyroscopeZ(), this.activity.getJeuView().getDeplacementX()));
+        Log.i("ter.jeuthread", String.format("gyro %f - %d value defined %d", this.activity.getJeuView().getGyroscopeZ(), val, this.activity.getJeuView().getDeplacementX()));
 
         activity.runOnUiThread(new Runnable() {
             @Override

@@ -58,7 +58,7 @@ public class JeuView extends View {
     public void moveDeplacementX(int value) {
         int oneHalfPercentOfScreen = getWidthPxPerPercent()/2;
         int newDeplacement = oneHalfPercentOfScreen * value;
-        Log.i("ter.info", String.format("%d", newDeplacement));
+        //Log.i("ter.info", String.format("%d", newDeplacement));
         if (
                 (newDeplacement + deplacementX >  -40 * oneHalfPercentOfScreen * 2)
                 && (newDeplacement+deplacementX < 40 * oneHalfPercentOfScreen * 2)
@@ -308,6 +308,7 @@ public class JeuView extends View {
     }
 
     public void setGyroscope(float gyroscopeZ) {
+        Log.i("ter.jeuview", String.format("%f", gyroscopeZ));
         this.gyroscopeZ = gyroscopeZ;
     }
 }
