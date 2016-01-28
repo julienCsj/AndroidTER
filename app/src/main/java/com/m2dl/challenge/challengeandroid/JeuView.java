@@ -1,6 +1,7 @@
 package com.m2dl.challenge.challengeandroid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -9,6 +10,8 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RectF;
+import android.graphics.Region;
 import android.graphics.Shader;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
@@ -21,8 +24,12 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.m2dl.challenge.challengeandroid.Model.Cola;
+import com.m2dl.challenge.challengeandroid.Model.Glacon;
 import com.m2dl.challenge.challengeandroid.Model.Objet;
+import com.m2dl.challenge.challengeandroid.Service.TakePicture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +55,10 @@ public class JeuView extends View {
     private int heightVerre;
     private ShapeDrawable shapeDrawable;
     private int deplacementX;
+
+    private int score = 0;
+
+    private Path path;
 
     private List<Objet> objets;
 
@@ -105,9 +116,10 @@ public class JeuView extends View {
         this.drawGlacon(canvas);
         // Draw water
         this.drawWaterTexture(canvas);
-
         // Draw glass
         this.drawGlass(canvas);
+        // Draw score
+        this.drawScore(canvas);
 
     }
 
@@ -123,6 +135,15 @@ public class JeuView extends View {
 
         canvas.drawBitmap(glassResized, xVerre, yVerre, paint);
     }
+
+    private void drawScore(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.WHITE);
+
+        canvas.drawText("Score : " + score, 200, 0, paint);
+    }
+
     public void drawGlacon (Canvas canvas) {
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), new Paint(Color.BLACK));
         for (int i = 0; i < objets.size(); i++) {
@@ -130,15 +151,36 @@ public class JeuView extends View {
                     objets.get(i).getSkin()), objets.get(i).getX().intValue(), objets.get(i).getY().intValue(), null);
             objets.get(i).bouger();
         }
+
+        Region r = new Region();
+        RectF rectF = new RectF();
+        Path p = getPath();
+        p.computeBounds(rectF, true);
+        r.setPath(getPath(), new Region((int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom));
+
+
+
         for (int i = 0; i < objets.size(); i++) {
             if (objets.get(i).getY() > canvas.getHeight()) {
+                objets.remove(i);
+            }
+
+            if(r.contains((Math.round(objets.get(i).getX())), Math.round(objets.get(i).getY()))) {
+                if(objets.get(i) instanceof Cola) {
+                    gameOver();
+                }
+
+                if(objets.get(i) instanceof Glacon) {
+                    score += 10;
+                }
                 objets.remove(i);
             }
         }
     }
     private void drawWaterTexture(Canvas canvas) {
-        PathShape path = this.getPath();
-        shapeDrawable = new ShapeDrawable(path);
+        this.path = getPath();
+        PathShape pathShape = new PathShape(path, width, height);
+        shapeDrawable = new ShapeDrawable(pathShape);
         shapeDrawable.getPaint().setStyle(Paint.Style.FILL);
         shapeDrawable.getPaint().setShader(this.waterShader);
         shapeDrawable.setBounds(0, 0, width, height);
@@ -147,7 +189,7 @@ public class JeuView extends View {
     private int getXGlass() {
         return 0;
     }
-    private PathShape getPath() {
+    private Path getPath() {
         int xPercentOfDevice = getWidthPxPerPercent();
         Double widthVerreDouble = ((Integer)(xPercentOfDevice*(GLASS_SIZE-8))).doubleValue();
         this.widthVerre = widthVerreDouble.intValue();
@@ -175,8 +217,11 @@ public class JeuView extends View {
         path.lineTo(glassX3, glassY3);
         path.lineTo(glassX4, glassY4);
         path.close();
-        return new PathShape(path, width, height);
+        this.path = path;
+        return path;
     }
+
+
 
     private int getWidthPxPerPercent() {
         return width / 100;
@@ -223,6 +268,12 @@ public class JeuView extends View {
         }
         invalidate();
         return true;
+    }
+
+    public void gameOver() {
+        Intent intent = new Intent(getContext(), TakePicture.class);
+        intent.putExtra("score", score);
+        getContext().startActivity(intent);
     }
 
 
