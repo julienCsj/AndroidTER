@@ -1,5 +1,7 @@
 package com.m2dl.challenge.challengeandroid.Model;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
 /**
@@ -7,6 +9,42 @@ import com.activeandroid.annotation.Table;
  */
 
 @Table(name = "score")
-public class Score {
+public class Score extends Model {
+    @Column(name = "score")
+    private int score;
 
+    @Column(name = "pseudo")
+    private String pseudo;
+
+    @Column(name = "pathPhoto")
+    private String pathPhoto;
+
+    @Column(name = "difficulte")
+    private Difficulte difficulte;
+
+    public Score() {
+    }
+
+    public Score(int score, String pseudo, String pathPhoto, Difficulte difficulte) {
+        this.score = score;
+        this.pseudo = pseudo;
+        this.pathPhoto = pathPhoto;
+        this.difficulte = difficulte;
+    }
+
+    public Difficulte getDifficulte() {
+        return difficulte;
+    }
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public String getPathPhoto() {
+        return pathPhoto;
+    }
 }

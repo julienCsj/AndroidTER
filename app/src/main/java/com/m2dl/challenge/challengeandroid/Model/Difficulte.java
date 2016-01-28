@@ -15,4 +15,8 @@ public enum Difficulte {
         this.traduction = traduction;
         this.traductionComplete = traductionComplete;
     }
+
+    public String getTraduction() {
+        return traduction;
+    }
 }
