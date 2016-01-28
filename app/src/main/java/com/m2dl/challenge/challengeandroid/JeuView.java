@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RectF;
+import android.graphics.Region;
 import android.graphics.Shader;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
@@ -48,6 +50,8 @@ public class JeuView extends View {
     private int heightVerre;
     private ShapeDrawable shapeDrawable;
     private int deplacementX;
+
+    private Path path;
 
     private List<Objet> objets;
 
@@ -130,15 +134,25 @@ public class JeuView extends View {
                     objets.get(i).getSkin()), objets.get(i).getX().intValue(), objets.get(i).getY().intValue(), null);
             objets.get(i).bouger();
         }
+
+        Region r = new Region();
+        RectF rectF = new RectF();
+        Path p = getPath();
+        p.computeBounds(rectF, true);
+        r.setPath(getPath(), new Region((int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom));
+
+
+
         for (int i = 0; i < objets.size(); i++) {
-            if (objets.get(i).getY() > canvas.getHeight()) {
+            if (objets.get(i).getY() > canvas.getHeight() || r.contains((Math.round(objets.get(i).getX())), Math.round(objets.get(i).getY()))) {
                 objets.remove(i);
             }
         }
     }
     private void drawWaterTexture(Canvas canvas) {
-        PathShape path = this.getPath();
-        shapeDrawable = new ShapeDrawable(path);
+        this.path = getPath();
+        PathShape pathShape = new PathShape(path, width, height);
+        shapeDrawable = new ShapeDrawable(pathShape);
         shapeDrawable.getPaint().setStyle(Paint.Style.FILL);
         shapeDrawable.getPaint().setShader(this.waterShader);
         shapeDrawable.setBounds(0, 0, width, height);
@@ -147,7 +161,7 @@ public class JeuView extends View {
     private int getXGlass() {
         return 0;
     }
-    private PathShape getPath() {
+    private Path getPath() {
         int xPercentOfDevice = getWidthPxPerPercent();
         Double widthVerreDouble = ((Integer)(xPercentOfDevice*(GLASS_SIZE-8))).doubleValue();
         this.widthVerre = widthVerreDouble.intValue();
@@ -175,8 +189,11 @@ public class JeuView extends View {
         path.lineTo(glassX3, glassY3);
         path.lineTo(glassX4, glassY4);
         path.close();
-        return new PathShape(path, width, height);
+        this.path = path;
+        return path;
     }
+
+
 
     private int getWidthPxPerPercent() {
         return width / 100;
