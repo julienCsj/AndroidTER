@@ -10,8 +10,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 import com.m2dl.challenge.challengeandroid.Activity.JeuActivity;
-import com.m2dl.challenge.challengeandroid.Model.Glacon;
 import com.m2dl.challenge.challengeandroid.Model.Objet;
+import com.m2dl.challenge.challengeandroid.Service.GenerationObjet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ public class JeuThread extends Thread {
     private boolean running;
     private long frameRate;
     private boolean loading;
+    private int timer;
 
     private JeuActivity activity;
     private Context context;
@@ -43,6 +44,7 @@ public class JeuThread extends Thread {
         // 30 images par seconde.
         frameRate = (long) (1000 / 30);
         loading = true;
+        timer = 0;
     }
 
     @Override
@@ -71,11 +73,18 @@ public class JeuThread extends Thread {
     }
 
     protected void doDraw(Canvas canvas) {
+        timer++;
+        if (timer >= 100) {
+            GenerationObjet gen = new GenerationObjet(context);
+            objets.add(gen.genererObjetAleatoire());
+            timer = 0;
+        }
+
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), new Paint(Color.BLACK));
-        for (Objet o : objets) {
+        for (int i = 0; i < objets.size(); i++) {
             canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(),
-                    o.getSkin()), o.getX().intValue(), o.getY().intValue(), null);
-            o.bouger();
+                    objets.get(i).getSkin()), objets.get(i).getX().intValue(), objets.get(i).getY().intValue(), null);
+            objets.get(i).bouger();
         }
         for (int i = 0; i < objets.size(); i++) {
             if (objets.get(i).getY() > canvas.getHeight()) {
@@ -85,14 +94,9 @@ public class JeuThread extends Thread {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() != MotionEvent.ACTION_DOWN)
+        if (event.getAction() != MotionEvent.ACTION_DOWN) {
             return false;
-
-        Float x = event.getX();
-        Float y = event.getY();
-
-        Objet o = new Glacon(x, y, 3.0f);
-        objets.add(o);
+        }
 
         return true;
     }

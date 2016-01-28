@@ -5,9 +5,9 @@ import com.m2dl.challenge.challengeandroid.R;
 /**
  * Created by Elliot on 28/01/2016.
  */
-public class Glacon extends Objet {
-    public Glacon(Float x, Float y, Float vitesse) {
-        super(x, y, vitesse, R.drawable.glacon);
-    }
+public class Cola extends Objet {
 
+    public Cola(Float x, Float y, Float vitesse) {
+        super(x, y, vitesse, R.drawable.coke);
+    }
 }
