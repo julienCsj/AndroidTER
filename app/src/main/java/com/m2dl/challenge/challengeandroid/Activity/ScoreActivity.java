@@ -1,7 +1,9 @@
-package com.m2dl.challenge.challengeandroid;
+package com.m2dl.challenge.challengeandroid.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.m2dl.challenge.challengeandroid.R;
 
 public class ScoreActivity extends AppCompatActivity {
 
