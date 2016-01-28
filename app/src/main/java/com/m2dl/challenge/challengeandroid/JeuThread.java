@@ -4,7 +4,10 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+import com.activeandroid.query.Select;
 import com.m2dl.challenge.challengeandroid.Activity.JeuActivity;
+import com.m2dl.challenge.challengeandroid.Model.Configuration;
+import com.m2dl.challenge.challengeandroid.Model.Difficulte;
 import com.m2dl.challenge.challengeandroid.Service.GenerationObjet;
 
 /**
@@ -50,8 +53,13 @@ public class JeuThread extends Thread {
     }
 
     protected void doDraw() {
+
+
+        Configuration confActuelle = new Select().from(Configuration.class).orderBy("date DESC").executeSingle();
+
+
         timer++;
-        if (timer >= 100) {
+        if (timer >= confActuelle.getDifficulte().timer) {
             GenerationObjet gen = new GenerationObjet(context);
             this.activity.getJeuView().addObjet(gen.genererObjetAleatoire());
             timer = 0;

@@ -152,8 +152,9 @@ public class JeuView extends View {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(Color.WHITE);
+        paint.setTextSize(60);
 
-        canvas.drawText("Score : " + score, 200, 0, paint);
+        canvas.drawText("Score : " + score, 50, 75, paint);
     }
 
     public void drawGlacon (Canvas canvas) {

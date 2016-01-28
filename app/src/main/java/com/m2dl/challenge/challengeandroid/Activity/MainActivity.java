@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
+import com.m2dl.challenge.challengeandroid.Model.Configuration;
+import com.m2dl.challenge.challengeandroid.Model.Difficulte;
 import com.m2dl.challenge.challengeandroid.R;
 import com.m2dl.challenge.challengeandroid.Service.TakePicture;
 
@@ -35,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ActiveAndroid.initialize(this);
+
+        Configuration confActuelle = new Select().from(Configuration.class).orderBy("date DESC").executeSingle();
+        if (confActuelle == null) {
+            confActuelle = new Configuration("Anonyme", Difficulte.FACILE, new Date());
+            confActuelle.save();
+        }
     }
 
     public void runGame(View v) {

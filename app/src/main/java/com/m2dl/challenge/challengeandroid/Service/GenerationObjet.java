@@ -5,7 +5,9 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.activeandroid.query.Select;
 import com.m2dl.challenge.challengeandroid.Model.Cola;
+import com.m2dl.challenge.challengeandroid.Model.Configuration;
 import com.m2dl.challenge.challengeandroid.Model.Glacon;
 import com.m2dl.challenge.challengeandroid.Model.Objet;
 
@@ -31,7 +33,10 @@ public class GenerationObjet {
         Objet resultat = null;
 
         Random r = new Random();
-        int vitesse = r.nextInt(15 - 5) + 5;
+
+        Configuration confActuelle = new Select().from(Configuration.class).orderBy("date DESC").executeSingle();
+
+        int vitesse = r.nextInt(confActuelle.getDifficulte().vitesse - 10) + 10;
         int x = r.nextInt((widthScreen - widthScreen/10) - (widthScreen/10)) + widthScreen/10;
         int y = 0;//r.nextInt(heightScreen - heightScreen/5);
 
