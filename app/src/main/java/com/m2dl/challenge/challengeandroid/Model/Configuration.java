@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by julien on 28/01/16.
  */
 
-@Table(name = "score")
+@Table(name = "configuration")
 public class Configuration extends Model {
 
     @Column(name = "pseudo")
@@ -21,6 +21,14 @@ public class Configuration extends Model {
 
     @Column(name = "date")
     private Date date;
+
+    public Configuration() {}
+
+    public Configuration(String pseudo, Difficulte difficulte, Date date) {
+        this.pseudo = pseudo;
+        this.difficulte = difficulte;
+        this.date = date;
+    }
 
 
     public String getPseudo() {

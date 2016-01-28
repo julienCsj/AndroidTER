@@ -79,5 +79,5 @@
         android:layout_below="@+id/pseudo"
         android:layout_alignLeft="@+id/pseudo"
         android:layout_alignStart="@+id/pseudo" />
-    
+
 </RelativeLayout>

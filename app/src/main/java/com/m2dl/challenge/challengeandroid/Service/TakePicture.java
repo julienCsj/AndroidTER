@@ -80,6 +80,8 @@ public class TakePicture extends Activity implements SurfaceHolder.Callback
                 iv_image.setImageBitmap(bmp);
 
                 MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "YOU_LOOSE"+new Date().getTime(), "Image du jeu");
+
+                //Intent
             }
         };
 

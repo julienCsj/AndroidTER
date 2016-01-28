@@ -36,7 +36,13 @@ public class OptionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_options);
 
 
-        final Configuration confActuelle = new Select().from(Configuration.class).orderBy("date DESC").executeSingle();
+        Configuration confActuelle = new Select().from(Configuration.class).orderBy("date DESC").executeSingle();
+        if (confActuelle == null) {
+            confActuelle = new Configuration("Anonyme", Difficulte.FACILE, new Date());
+        }
+
+        final Difficulte difficulte = confActuelle.getDifficulte();
+
 
         spinner = (Spinner) findViewById(R.id.spinner);
         input = (EditText) findViewById(R.id.pseudo);
@@ -69,7 +75,7 @@ public class OptionsActivity extends AppCompatActivity {
             spinner.post(new Runnable() {
                 @Override
                 public void run() {
-                    spinner.setSelection(confActuelle.getDifficulte().ordre);
+                    spinner.setSelection(difficulte.ordre);
                 }
             });
         } else {
