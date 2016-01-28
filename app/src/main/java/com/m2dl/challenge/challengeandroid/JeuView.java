@@ -187,7 +187,7 @@ public class JeuView extends View {
 
                 if(objets.get(i) instanceof Glacon) {
                     score += 10;
-                    MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.water_droplet_1);
+                    MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.water_droplet);
                     mediaPlayer.start();
                 }
                 objets.remove(i);
