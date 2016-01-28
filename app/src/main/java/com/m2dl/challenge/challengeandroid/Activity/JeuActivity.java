@@ -135,6 +135,7 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
             //Log.i("ter.VerreView", String.format("[%f, %f, %f] - orientationY %f", deltaRotationVector[0], deltaRotationVector[1], deltaRotationVector[2], deltaRotationVector[3]));
             orientationZ += deltaRotationVector[2];
             jeuView.setGyroscope(orientationZ);
+            jeuView.setCurrentAcceleration(deltaRotationVector[2]);
         }
         timestamp = event.timestamp;
         float[] deltaRotationMatrix = new float[9];

@@ -56,6 +56,8 @@ public class JeuView extends View {
     private int widthVerre;
     private int heightVerre;
     private ShapeDrawable shapeDrawable;
+    private float currentAcceleration;
+    private float previousAcceleration;
 
     public void moveDeplacementX(int value) {
         int oneHalfPercentOfScreen = getWidthPxPerPercent()/2;
@@ -212,9 +214,11 @@ public class JeuView extends View {
         this.widthVerre = widthVerreDouble.intValue();
         this.heightVerre = getWidthPxPerPercent()*19;
 
-        int glassHeightPercent = getWidthPxPerPercent() * 18;
+        int glassHeightPercent = getWidthPxPerPercent() * 12;
         int glassBottomY1 = getWidthPxPerPercent() * 20;
 
+        // prise en compte du score
+        glassHeightPercent += (score/30) * xPercentOfDevice;
 
         int glassX1 = (width/2)-(widthVerre/2)+ deplacementX + xPercentOfDevice * 3,
             glassX2 = (width/2)+(widthVerre/2)+ deplacementX - xPercentOfDevice * 4,
@@ -224,6 +228,25 @@ public class JeuView extends View {
             glassY2 = height - glassBottomY1,
             glassY3 = height- glassHeightPercent - glassBottomY1,
             glassY4 = height- glassHeightPercent - glassBottomY1;
+
+        if (previousAcceleration == 0) {
+            previousAcceleration = currentAcceleration;
+        } else {
+            if (Math.abs(previousAcceleration - currentAcceleration) > 0.005) {
+                if (currentAcceleration > 0) {
+                    glassY3 -= Math.abs(previousAcceleration - currentAcceleration) * 90 * xPercentOfDevice;
+                } else {
+                    glassY4 -= Math.abs(previousAcceleration - currentAcceleration) * 90 * xPercentOfDevice;
+                }
+            }
+        }
+        int allowedMinHeight = getHeightPxPerPercent() * 71;
+        if (glassY3 < allowedMinHeight || glassY4 < allowedMinHeight) {
+            this.gameOver();
+        }
+        Log.i("ter.verreview", String.format("%d %d %d", glassY3, glassY4, allowedMinHeight));
+
+
 
 
         //Log.d("ter.verreview", String.format("1[%d, %d] 2[%d, %d] 3[%d, %d] 4[%d, %d]", glassX1, glassY1, glassX2, glassY2, glassX3, glassY3, glassX4, glassY4));
@@ -312,5 +335,9 @@ public class JeuView extends View {
     public void setGyroscope(float gyroscopeZ) {
         Log.i("ter.jeuview", String.format("%f", gyroscopeZ));
         this.gyroscopeZ = gyroscopeZ;
+    }
+
+    public void setCurrentAcceleration(float currentAcceleration) {
+        this.currentAcceleration = currentAcceleration;
     }
 }
