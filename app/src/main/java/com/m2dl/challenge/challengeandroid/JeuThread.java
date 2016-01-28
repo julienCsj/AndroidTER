@@ -20,8 +20,6 @@ import java.util.List;
  * Created by Elliot on 28/01/2016.
  */
 public class JeuThread extends Thread {
-    private List<Objet> objets;
-
     private boolean running;
     private long frameRate;
     private boolean loading;
@@ -39,7 +37,6 @@ public class JeuThread extends Thread {
         this.context = context;
         this.activity = (JeuActivity) context;
 
-        objets = new ArrayList<Objet>();
         running = true;
         // 30 images par seconde.
         frameRate = (long) (1000 / 30);
@@ -76,21 +73,21 @@ public class JeuThread extends Thread {
         timer++;
         if (timer >= 100) {
             GenerationObjet gen = new GenerationObjet(context);
-            objets.add(gen.genererObjetAleatoire());
+            this.activity.getJeuView().addObjet(gen.genererObjetAleatoire());
             timer = 0;
         }
-
-        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), new Paint(Color.BLACK));
-        for (int i = 0; i < objets.size(); i++) {
-            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(),
-                    objets.get(i).getSkin()), objets.get(i).getX().intValue(), objets.get(i).getY().intValue(), null);
-            objets.get(i).bouger();
-        }
-        for (int i = 0; i < objets.size(); i++) {
-            if (objets.get(i).getY() > canvas.getHeight()) {
-                objets.remove(i);
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // update TextView here!
+                forceDraw();
             }
-        }
+        });
+
+    }
+
+    private void forceDraw() {
+        this.activity.getJeuView().invalidate();
     }
 
     public boolean onTouchEvent(MotionEvent event) {

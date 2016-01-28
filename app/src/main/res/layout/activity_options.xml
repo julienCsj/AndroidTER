@@ -13,17 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sauvegarder"
-        android:id="@+id/button4"
+        android:id="@+id/buttonSauvegarder"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Retour"
-        android:id="@+id/button5"
-        android:layout_alignTop="@+id/button4"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -50,27 +43,29 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/pseudo"
+        android:layout_alignRight="@+id/buttonSauvegarder"
+        android:layout_alignEnd="@+id/buttonSauvegarder"
         android:layout_alignTop="@+id/textView4"
-        android:layout_toRightOf="@+id/button5"
-        android:layout_alignRight="@+id/button4"
-        android:layout_alignEnd="@+id/button4" />
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
 
     <Space
         android:layout_width="20px"
         android:layout_height="20px"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/editText"
-        android:layout_alignRight="@+id/editText"
-        android:layout_alignEnd="@+id/editText"
-        android:id="@+id/space" />
+        android:layout_alignRight="@+id/pseudo"
+        android:layout_alignEnd="@+id/pseudo"
+        android:id="@+id/space"
+        android:layout_above="@+id/spinner"
+        android:layout_below="@+id/pseudo" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Dificulté"
+        android:text="Difficulté"
         android:id="@+id/textView5"
         android:layout_below="@+id/space"
         android:layout_alignParentLeft="true"
@@ -80,8 +75,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
-        android:layout_below="@+id/editText"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/pseudo"
+        android:layout_alignLeft="@+id/pseudo"
+        android:layout_alignStart="@+id/pseudo" />
+    
 </RelativeLayout>
