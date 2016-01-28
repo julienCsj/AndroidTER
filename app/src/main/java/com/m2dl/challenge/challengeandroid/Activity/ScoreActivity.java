@@ -31,9 +31,6 @@ public class ScoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_score);
 
         List<Score> scores = new Select().from(Score.class).orderBy("score desc").execute();
-        for (Score s : scores) {
-            s.delete();
-        }
 
         /* Jeu de test pour l'ecran score
         *Score s1 = new Score(1000, "Patrick M.", "http", Difficulte.MOYEN);
@@ -56,6 +53,8 @@ public class ScoreActivity extends AppCompatActivity {
                 for (Score s : scores) {
                     s.delete();
                 }
+
+                finish();
                 return true;
             }
         });

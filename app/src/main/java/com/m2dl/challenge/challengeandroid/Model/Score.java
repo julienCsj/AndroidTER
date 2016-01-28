@@ -25,11 +25,11 @@ public class Score extends Model {
     public Score() {
     }
 
-    public Score(int score, String pseudo, String pathPhoto, Difficulte difficulte) {
+    public Score(int score, String pseudo, Difficulte difficulte) {
         this.score = score;
         this.pseudo = pseudo;
-        this.pathPhoto = pathPhoto;
         this.difficulte = difficulte;
+        this.pathPhoto = "";
     }
 
     public Difficulte getDifficulte() {

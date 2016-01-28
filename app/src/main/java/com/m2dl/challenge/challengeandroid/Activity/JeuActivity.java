@@ -6,7 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
+
+import com.activeandroid.query.Select;
 import com.m2dl.challenge.challengeandroid.JeuView;
+import com.m2dl.challenge.challengeandroid.Model.Configuration;
+import com.m2dl.challenge.challengeandroid.Model.Score;
 import com.m2dl.challenge.challengeandroid.R;
 import com.m2dl.challenge.challengeandroid.Service.TakePicture;
 
@@ -161,6 +165,10 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
 
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.glass_breaking);
         mediaPlayer.start(); // no need to call prepare(); create() does that for you
+
+        Configuration conf = new Select().from(Configuration.class).orderBy("date DESC").executeSingle();
+        Score s = new Score(score, conf.getPseudo(), conf.getDifficulte());
+        s.save();
 
         Intent intent = new Intent(this, TakePicture.class);
         intent.putExtra("score", score+"");

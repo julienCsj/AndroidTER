@@ -153,9 +153,6 @@ public class TakePicture extends Activity implements SurfaceHolder.Callback
     }
 
     public void saveScore(String pathPhoto) {
-        Configuration conf = new Select().from(Configuration.class).orderBy("date DESC").executeSingle();
-        new Score(Integer.decode(score), conf.getPseudo(), pathPhoto, conf.getDifficulte()).save();
-
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
