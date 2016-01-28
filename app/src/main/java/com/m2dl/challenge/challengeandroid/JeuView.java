@@ -243,7 +243,7 @@ public class JeuView extends View {
     private int getHeightPxPerPercent() {
         return height / 100;
     }
-
+/*
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // get masked (not specific to a pointer) action
@@ -282,7 +282,7 @@ public class JeuView extends View {
         }
         return true;
     }
-
+*/
     public void gameOver() {
         ((JeuActivity) getContext()).launchGameOver(this.score);
     }

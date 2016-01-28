@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 public class JeuActivity extends AppCompatActivity  implements SensorEventListener {
 
-    private static final float EPSILON = 1;
+    private static final float EPSILON = 0.01F;
     private JeuView jeuView;
     private SensorManager sensorManager;
     private Sensor gyroscope;
