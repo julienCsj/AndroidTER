@@ -6,7 +6,7 @@ import android.util.Log;
  * Created by julien on 28/01/16.
  */
 public enum Difficulte {
-    FACILE("Champomy", "Pour les débutants, c'est pas violent", 0, 90, 10),
+    FACILE("Champomy", "Pour les débutants, c'est pas violent", 0, 90, 15),
     MOYEN("Bière", "Y'a moyen de s'amuser", 1, 60, 20),
     DIFFICILE("Barman de l'extreme", "Ca va mal finir !", 2, 30, 30);
 
