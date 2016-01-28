@@ -1,22 +1,20 @@
 package com.m2dl.challenge.challengeandroid.Activity;
 
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.FrameLayout;
+import com.m2dl.challenge.challengeandroid.JeuView;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.FrameLayout;
 import android.widget.Toast;
-
-import com.m2dl.challenge.challengeandroid.JeuView;
 
 public class JeuActivity extends AppCompatActivity  implements SensorEventListener {
 
     private JeuView jeuView;
-
     private SensorManager sensorManager;
     private Sensor gyroscope;
     private float orientationZ;
@@ -24,6 +22,7 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setUpAccelerometer();
     }
 
     @Override
@@ -33,9 +32,6 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
         layout.addView(jeuView);
         setContentView(layout);
         super.onStart();
-
-        setUpAccelerometer();
-
     }
 
     @Override
@@ -48,14 +44,14 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
         super.onStop();
     }
 
+
     public void setUpAccelerometer () {
 
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         if (gyroscope != null) {
             // Il y a au moins un accéléromètre
-        }
-        else {
+        } else {
             Toast.makeText(this, "No accelerometer detected", Toast.LENGTH_SHORT).show();
         }
     }
@@ -97,7 +93,11 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
             z = event.values[2];
 
             orientationZ += z;
-            Log.i("ter.VerreView", String.format("[%f, %f, %f] - orientationY %f", x, y, z, orientationZ));
+            //Log.i("ter.VerreView", String.format("[%f, %f, %f] - orientationY %f", x, y, z, orientationZ));
         }
+    }
+
+    public JeuView getJeuView() {
+        return jeuView;
     }
 }
