@@ -1,10 +1,13 @@
 package com.m2dl.challenge.challengeandroid.Activity;
 
 import android.content.Intent;
+<<<<<<< HEAD
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Environment;
+=======
+>>>>>>> 80900b96898ce49f0aa532047f7310e82f426535
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,5 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent takePhoto = new Intent(this, TakePicture.class);
         startActivity(takePhoto);
+
+        Intent intent = new Intent(this, JeuActivity.class);
+        startActivity(intent);
     }
 }
