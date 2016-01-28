@@ -28,11 +28,9 @@ public class JeuThread extends Thread {
     private JeuActivity activity;
     private Context context;
 
-    private SurfaceHolder surfaceHolder;
     private Handler handler;
 
-    public JeuThread(SurfaceHolder holder, Context context, Handler handler) {
-        this.surfaceHolder = holder;
+    public JeuThread(Context context, Handler handler) {
         this.handler = handler;
         this.context = context;
         this.activity = (JeuActivity) context;
@@ -47,29 +45,20 @@ public class JeuThread extends Thread {
     @Override
     public void run() {
         while (running) {
-            Canvas c = null;
             try {
-                c = surfaceHolder.lockCanvas();
 
-                synchronized (surfaceHolder) {
-                    long start = System.currentTimeMillis();
-                    doDraw(c);
-                    long diff = System.currentTimeMillis() - start;
+                long start = System.currentTimeMillis();
+                doDraw();
+                long diff = System.currentTimeMillis() - start;
 
-                    if (diff < frameRate)
-                        Thread.sleep(frameRate - diff);
-                }
+                if (diff < frameRate)
+                    Thread.sleep(frameRate - diff);
             } catch (InterruptedException e) {
-            }
-            finally {
-                if (c != null) {
-                    surfaceHolder.unlockCanvasAndPost(c);
-                }
             }
         }
     }
 
-    protected void doDraw(Canvas canvas) {
+    protected void doDraw() {
         timer++;
         if (timer >= 100) {
             GenerationObjet gen = new GenerationObjet(context);
