@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -15,6 +16,9 @@ import android.view.SurfaceView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.activeandroid.query.Select;
+import com.m2dl.challenge.challengeandroid.Model.Configuration;
+import com.m2dl.challenge.challengeandroid.Model.Score;
 import com.m2dl.challenge.challengeandroid.R;
 
 /**
@@ -39,12 +43,18 @@ public class TakePicture extends Activity implements SurfaceHolder.Callback
     //the camera parameters
     private Parameters parameters;
 
+    private int score;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_takepicture);
+
+        Intent intent = getIntent();
+        score = Integer.getInteger(intent.getStringExtra("score"));
+
         //get the Image View at the main.xml file
         iv_image = (ImageView) findViewById(R.id.imageView);
         //get the Surface View at the main.xml file
@@ -79,9 +89,9 @@ public class TakePicture extends Activity implements SurfaceHolder.Callback
                 Toast.makeText(getApplicationContext(), bmp.getHeight(), Toast.LENGTH_SHORT).show();
                 iv_image.setImageBitmap(bmp);
 
-                MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "YOU_LOOSE"+new Date().getTime(), "Image du jeu");
+                MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "YOU_LOOSE" + new Date().getTime(), "Image du jeu");
 
-                //Intent
+                saveScore("vide");
             }
         };
 
@@ -112,5 +122,10 @@ public class TakePicture extends Activity implements SurfaceHolder.Callback
         mCamera.release();
         //unbind the camera from this object
         mCamera = null;
+    }
+
+    public void saveScore(String pathPhoto) {
+        Configuration conf = new Select().from(Configuration.class).orderBy("date DESC").executeSingle();
+        new Score(score, conf.getPseudo(), pathPhoto, conf.getDifficulte());
     }
 }

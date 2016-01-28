@@ -31,12 +31,13 @@ public class ScoreActivity extends AppCompatActivity {
             s.delete();
         }
 
-        Score s1 = new Score(1000, "Patrick M.", "http", Difficulte.MOYEN);
+        /* Jeu de test pour l'ecran score
+        *Score s1 = new Score(1000, "Patrick M.", "http", Difficulte.MOYEN);
         Score s2 = new Score(3000, "José-le-fou.", "http", Difficulte.DIFFICILE);
         Score s3 = new Score(200, "Fragile31", "http", Difficulte.FACILE);
         s1.save();
         s2.save();
-        s3.save();
+        s3.save();*/
 
         scores = new Select().from(Score.class).orderBy("score desc").execute();
         list=(ListView) findViewById(R.id.listView);
