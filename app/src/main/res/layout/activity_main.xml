@@ -12,27 +12,37 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/textView" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Verre Solitaire"
+        android:id="@+id/titreApp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
-    <ImageView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:minWidth="200dp"
-        android:minHeight="200dp"
-        android:src="#ffffff"
-        android:layout_below="@+id/textView"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView"
-        android:layout_marginTop="80dp"></ImageView>
+        android:text="Nouvelle partie"
+        android:id="@+id/button"
+        android:layout_below="@+id/titreApp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="134dp"
+        android:onClick="runGame"/>
 
-    <SurfaceView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/surfaceView"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:text="Scores"
+        android:id="@+id/button2"
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:onClick="runScore"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Préférences"
+        android:id="@+id/button3"
+        android:layout_below="@+id/button2"
+        android:layout_centerHorizontal="true"
+        android:onClick="runPrefs"/>
 </RelativeLayout>

@@ -44,7 +44,7 @@ public class TakePicture extends Activity implements SurfaceHolder.Callback
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_takepicture);
         //get the Image View at the main.xml file
         iv_image = (ImageView) findViewById(R.id.imageView);
         //get the Surface View at the main.xml file

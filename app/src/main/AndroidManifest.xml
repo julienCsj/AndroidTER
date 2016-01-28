@@ -9,6 +9,10 @@
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
 
 
+    <meta-data android:name="AA_DB_NAME" android:value="TerChallenge.db" />
+    <meta-data android:name="AA_DB_VERSION" android:value="1" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

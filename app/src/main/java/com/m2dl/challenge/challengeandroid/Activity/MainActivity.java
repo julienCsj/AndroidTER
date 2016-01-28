@@ -9,10 +9,13 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.activeandroid.ActiveAndroid;
 import com.m2dl.challenge.challengeandroid.R;
 import com.m2dl.challenge.challengeandroid.Service.TakePicture;
 
@@ -26,16 +29,26 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent takePhoto = new Intent(this, TakePicture.class);
-        startActivity(takePhoto);
+        ActiveAndroid.initialize(this);
+    }
 
+    public void runGame(View v) {
         Intent intent = new Intent(this, JeuActivity.class);
+        startActivity(intent);
+    }
+
+    public void runScore(View v) {
+        Intent intent = new Intent(this, ScoreActivity.class);
+        startActivity(intent);
+    }
+
+    public void runPrefs(View v) {
+        Intent intent = new Intent(this, OptionsActivity.class);
         startActivity(intent);
     }
 }
