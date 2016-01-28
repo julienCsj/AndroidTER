@@ -80,18 +80,10 @@ public class JeuThread extends Thread {
             timer = 0;
         }
 
-        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), new Paint(Color.BLACK));
-        for (int i = 0; i < objets.size(); i++) {
-            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(),
-                    objets.get(i).getSkin()), objets.get(i).getX().intValue(), objets.get(i).getY().intValue(), null);
-            objets.get(i).bouger();
-        }
-        for (int i = 0; i < objets.size(); i++) {
-            if (objets.get(i).getY() > canvas.getHeight()) {
-                objets.remove(i);
-            }
-        }
+        
     }
+
+
 
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() != MotionEvent.ACTION_DOWN) {

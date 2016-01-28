@@ -29,13 +29,11 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
     @Override
     protected void onStart() {
         FrameLayout layout = new FrameLayout(this);
-        jeuView = new JeuView(this);
+        jeuView = new JeuView(this, null);
         layout.addView(jeuView);
         setContentView(layout);
         super.onStart();
-
         setUpAccelerometer();
-
     }
 
     @Override
@@ -99,5 +97,9 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
             orientationZ += z;
             Log.i("ter.VerreView", String.format("[%f, %f, %f] - orientationY %f", x, y, z, orientationZ));
         }
+    }
+
+    public JeuView getJeuView() {
+        return jeuView;
     }
 }
