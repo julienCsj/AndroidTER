@@ -1,11 +1,13 @@
 package com.m2dl.challenge.challengeandroid.Activity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import com.m2dl.challenge.challengeandroid.JeuView;
+import com.m2dl.challenge.challengeandroid.R;
 import com.m2dl.challenge.challengeandroid.Service.TakePicture;
 
 import android.content.Context;
@@ -156,6 +158,10 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
     }
 
     public void launchGameOver(int score) {
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.glass_breaking);
+        mediaPlayer.start(); // no need to call prepare(); create() does that for you
+
         Intent intent = new Intent(this, TakePicture.class);
         intent.putExtra("score", score+"");
         startActivity(intent);
