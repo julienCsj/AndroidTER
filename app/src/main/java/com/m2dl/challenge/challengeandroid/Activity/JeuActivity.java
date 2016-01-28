@@ -31,6 +31,7 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
         jeuView = new JeuView(this);
         layout.addView(jeuView);
         setContentView(layout);
+        jeuView.getThread().start();
         super.onStart();
     }
 
@@ -91,8 +92,8 @@ public class JeuActivity extends AppCompatActivity  implements SensorEventListen
             x = event.values[0];
             y = event.values[1];
             z = event.values[2];
-
             orientationZ += z;
+            jeuView.setGyroscope(orientationZ);
             //Log.i("ter.VerreView", String.format("[%f, %f, %f] - orientationY %f", x, y, z, orientationZ));
         }
     }

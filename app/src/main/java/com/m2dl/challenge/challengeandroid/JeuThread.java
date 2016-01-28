@@ -1,20 +1,11 @@
 package com.m2dl.challenge.challengeandroid;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Handler;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
+import android.util.Log;
 
 import com.m2dl.challenge.challengeandroid.Activity.JeuActivity;
-import com.m2dl.challenge.challengeandroid.Model.Objet;
 import com.m2dl.challenge.challengeandroid.Service.GenerationObjet;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Elliot on 28/01/2016.
@@ -65,6 +56,37 @@ public class JeuThread extends Thread {
             this.activity.getJeuView().addObjet(gen.genererObjetAleatoire());
             timer = 0;
         }
+        float gyroscopeZ = this.activity.getJeuView().getGyroscopeZ();
+        if (gyroscopeZ > 3) {
+            this.activity.getJeuView().moveDeplacementX(-3);
+        } else {
+            if (gyroscopeZ > 2) {
+                this.activity.getJeuView().moveDeplacementX(-2);
+            } else {
+                if (gyroscopeZ > 1) {
+                    this.activity.getJeuView().moveDeplacementX(-1);
+                } else {
+                    if (gyroscopeZ > 0) {
+                        this.activity.getJeuView().moveDeplacementX(0);
+                    } else {
+                        if (gyroscopeZ > -1) {
+                            this.activity.getJeuView().moveDeplacementX(1);
+                        } else {
+                            if (gyroscopeZ > -2) {
+                                this.activity.getJeuView().moveDeplacementX(2);
+                            } else {
+                                if (gyroscopeZ > -3) {
+                                    this.activity.getJeuView().moveDeplacementX(3);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Log.i("ter.jeuthread", String.format("gyro %f - value defined %d", this.activity.getJeuView().getGyroscopeZ(), this.activity.getJeuView().getDeplacementX()));
+
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -79,13 +101,6 @@ public class JeuThread extends Thread {
         this.activity.getJeuView().invalidate();
     }
 
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() != MotionEvent.ACTION_DOWN) {
-            return false;
-        }
-
-        return true;
-    }
 
     public void setRunning(boolean running) {
         this.running = running;
